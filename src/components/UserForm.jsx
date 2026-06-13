@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { postUser } from "../api/server";
 
 function UserForm() {
   const [form, setForm] = useState({
@@ -7,12 +8,22 @@ function UserForm() {
     email: "",
   });
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
-    console.log("Name:", form.name);
-    console.log("Password:", form.password);
-    console.log("Email:", form.email);
+    try {
+      const formResponse = await postUser(form);
+
+      console.log("Success:", formResponse);
+
+      setForm({
+        name: "",
+        password: "",
+        email: "",
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   return (
